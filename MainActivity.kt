@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
         val button2: Button = findViewById(R.id.button2)
         val button3: Button = findViewById(R.id.button3)
         val button4: Button = findViewById(R.id.button4)
+        val infoButton: Button = findViewById(R.id.infoButton)
 
         // Set OnClickListeners for the buttons
         button1.setOnClickListener {
@@ -42,6 +43,10 @@ class MainActivity : ComponentActivity() {
 
         button4.setOnClickListener {
             onProgressButtonClick()
+        }
+        
+        infoButton.setOnClickListener {
+            onInfoButtonClick()
         }
     }
 
@@ -64,6 +69,13 @@ class MainActivity : ComponentActivity() {
     private fun onProgressButtonClick() {
         // Start the NewWorkoutActivity
         val intent = Intent(this, ProgressWorkoutActivity::class.java)
-        startActivity(intent)}
+        startActivity(intent)
+    }
+
+    private fun onInfoButtonClick() {
+        // Start the NewWorkoutActivity
+        val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
 }
 

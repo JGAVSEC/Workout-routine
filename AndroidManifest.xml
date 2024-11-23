@@ -33,10 +33,17 @@
             android:theme="@style/Theme.MyWorkoutApp" />
 
         <activity
+            android:name=".InfoActivity"
+            android:label="Info"
+            android:theme="@style/Theme.MyWorkoutApp" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyWorkoutApp">
+
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

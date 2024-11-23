@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2C3E50"> <!-- Dark gray-blue color -->
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="←"
+        android:textSize="40sp"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="start|top"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:padding="0dp"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="start|center"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avtor: Jožef Gabrijel Avsec"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Datum: 12.12.1212"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verzija: 1.0.0"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Uporaba aplikacije: aplikacija je namenjena boljšemu in lažjemu napredku v fitnesu. Narejen je za začetnike in že iskušene, saj lahko vsi izvemo nekaj novega."
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:padding="8dp"
+            android:layout_gravity="start" />
+    </LinearLayout>
+</FrameLayout>
