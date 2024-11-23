@@ -23,6 +23,11 @@
             android:theme="@style/Theme.MyWorkoutApp" />
 
         <activity
+            android:name=".BrowseWorkoutActivity"
+            android:label="New Workout"
+            android:theme="@style/Theme.MyWorkoutApp" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

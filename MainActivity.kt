@@ -52,12 +52,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onSavedWorkoutsButtonClick() {
-        Toast.makeText(this, "Saved Workouts button clicked", Toast.LENGTH_SHORT).show()
+        // Start the NewWorkoutActivity
+        val intent = Intent(this, SavedWorkoutActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onBrowseWorkoutsButtonClick() {
-        Toast.makeText(this, "Browse Workouts button clicked", Toast.LENGTH_SHORT).show()
-    }
+        val intent = Intent(this, BrowseWorkoutActivity::class.java)
+        startActivity(intent)}
 
     private fun onProgressButtonClick() {
         Toast.makeText(this, "Progress button clicked", Toast.LENGTH_SHORT).show()
