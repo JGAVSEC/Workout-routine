@@ -62,7 +62,8 @@ class MainActivity : ComponentActivity() {
         startActivity(intent)}
 
     private fun onProgressButtonClick() {
-        Toast.makeText(this, "Progress button clicked", Toast.LENGTH_SHORT).show()
-        }
+        // Start the NewWorkoutActivity
+        val intent = Intent(this, ProgressWorkoutActivity::class.java)
+        startActivity(intent)}
 }
 

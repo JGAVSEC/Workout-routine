@@ -24,7 +24,12 @@
 
         <activity
             android:name=".BrowseWorkoutActivity"
-            android:label="New Workout"
+            android:label="Browse Workout"
+            android:theme="@style/Theme.MyWorkoutApp" />
+
+        <activity
+            android:name=".ProgressWorkoutActivity"
+            android:label="Progress"
             android:theme="@style/Theme.MyWorkoutApp" />
 
         <activity

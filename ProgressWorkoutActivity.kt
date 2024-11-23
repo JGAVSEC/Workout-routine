@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import android.widget.Toast
 
-class BrowseWorkoutActivity : ComponentActivity() {
+class ProgressWorkoutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_browse_workout)
+        setContentView(R.layout.activity_progress_workout)
         
         // Find the back button by its ID
         val backButton: Button = findViewById(R.id.backButton)
