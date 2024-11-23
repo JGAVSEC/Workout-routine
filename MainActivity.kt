@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.myworkoutapp.ui.theme.MyWorkoutAppTheme
 import android.widget.Button
 import android.widget.Toast
+import android.content.Intent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onNewWorkoutButtonClick() {
-        Toast.makeText(this, "New Workout button clicked", Toast.LENGTH_SHORT).show()
+        // Start the NewWorkoutActivity
+        val intent = Intent(this, NewWorkoutActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onSavedWorkoutsButtonClick() {
