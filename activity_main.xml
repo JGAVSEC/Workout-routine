@@ -34,28 +34,28 @@
             android:id="@+id/button1"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Button 1"
+            android:text="NEW WORKOUT"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Button 2"
+            android:text="SAVED WORKOUTS"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Button 3"
+            android:text="BROWSE WORKOUTS"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Button 4"
+            android:text="PROGRESS"
             android:textSize="18sp" />
     </LinearLayout>
 
