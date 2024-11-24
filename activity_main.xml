@@ -18,16 +18,15 @@
             android:text="SAMZYZZ"
             android:textSize="60sp"
             android:textColor="#FFFFFF"
-            android:padding="18dp" 
+            android:padding="18dp"
             android:fontFamily="@font/america_captian" />
-
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center">
 
         <Button
@@ -59,8 +58,21 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/infoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INFO"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:background="#FF5722"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp" />
+    </FrameLayout>
 </LinearLayout>

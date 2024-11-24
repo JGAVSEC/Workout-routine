@@ -1,20 +1,85 @@
 package com.example.myworkoutapp
-import android.widget.Button
+
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 
 class BrowseWorkoutActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse_workout)
-        
-        // Find the back button by its ID
+
         val backButton: Button = findViewById(R.id.backButton)
 
-        // Set an OnClickListener for the back button
         backButton.setOnClickListener {
-            finish() // Finish the current activity and go back to MainActivity
+            finish() 
+        }
+
+        val imageContainer: ConstraintLayout = findViewById(R.id.imageContainer)
+
+        val imageResIds = getDrawableResourceIds()
+
+        var previousId = View.generateViewId()
+        imageResIds.forEachIndexed { index, resId ->
+            val imageButton = ImageButton(this).apply {
+                id = View.generateViewId()
+                layoutParams = ConstraintLayout.LayoutParams(0, 0).apply {
+                    dimensionRatio = "H,1:0.4"
+                }
+                setImageResource(resId)
+                background = ContextCompat.getDrawable(context, android.R.color.transparent)
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                contentDescription = "Image Button $index"
+            }
+
+            imageContainer.addView(imageButton)
+
+            val constraintSet = ConstraintSet().apply {
+                clone(imageContainer)
+                if (index == 0) {
+                    connect(imageButton.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 16)
+                } else {
+                    connect(imageButton.id, ConstraintSet.TOP, previousId, ConstraintSet.BOTTOM, 16)
+                }
+                connect(imageButton.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 32) // Add margin to the start
+                connect(imageButton.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 32) // Add margin to the end
+                constrainWidth(imageButton.id, ConstraintSet.MATCH_CONSTRAINT)
+                constrainHeight(imageButton.id, ConstraintSet.MATCH_CONSTRAINT)
+                setDimensionRatio(imageButton.id, "H,1:0.4")
+            }
+            constraintSet.applyTo(imageContainer)
+
+            imageButton.setOnClickListener {
+                Toast.makeText(this, "Image Button $index clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            previousId = imageButton.id
+        }
+    }
+
+
+    private fun getDrawableResourceIds(): List<Int> {
+        val prefix = "newworkout"
+        val fields = R.drawable::class.java.declaredFields
+        return fields.mapNotNull { field ->
+            try {
+                val resourceId = field.getInt(null)
+                val resourceName = field.name
+                if (resourceName.startsWith(prefix)) {
+                    resourceId
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

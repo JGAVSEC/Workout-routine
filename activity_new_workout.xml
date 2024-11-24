@@ -23,13 +23,14 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NEW WORKOUT"
-            android:textSize="60sp"
-            android:textColor="#FFFFFF"
-            android:padding="18dp" />
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEW WORKOUT"
+        android:textSize="60sp"
+        android:textColor="#FFFFFF"
+        android:padding="18dp" />
+
     </LinearLayout>
 </FrameLayout>
