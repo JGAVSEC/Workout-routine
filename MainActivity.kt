@@ -16,52 +16,69 @@ import android.widget.Button
 import android.widget.Toast
 import android.content.Intent
 import android.content.Context
+import android.util.Log
+import com.example.myworkoutapp.ui.main.MainViewModel
+import androidx.activity.viewModels
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.myworkoutapp.navigation.SetupNavGraph
+import com.example.myworkoutapp.navigation.Screen
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: MainViewModel by viewModels()
+    private val TAG = "MainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val sharedPref = getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
-
-        if (!isLoggedIn) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
+        setContent {
+            val navController = rememberNavController()
+            
+            MyWorkoutAppTheme {
+                SetupNavGraph(
+                    navController = navController,
+                    startDestination = if (viewModel.uiState.value.isLoggedIn) {
+                        Screen.Main.route
+                    } else {
+                        Screen.Login.route
+                    }
+                )
+            }
         }
+    }
 
-        val logoutButton: Button = findViewById(R.id.logoutButton)
-        
-        logoutButton.setOnClickListener {
-            logout()
-        }
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart Called")
+    }
 
-        val button1: Button = findViewById(R.id.button1)
-        val button2: Button = findViewById(R.id.button2)
-        val button3: Button = findViewById(R.id.button3)
-        val button4: Button = findViewById(R.id.button4)
-        val infoButton: Button = findViewById(R.id.infoButton)
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart Called")
+    }
 
-        button1.setOnClickListener {
-            onNewWorkoutButtonClick()
-        }
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume Called")
+        Toast.makeText(this, "Welcome back to SAMZYZZ!", Toast.LENGTH_SHORT).show()
+        //Refresh the data
 
-        button2.setOnClickListener {
-            onSavedWorkoutsButtonClick()
-        }
+    }
 
-        button3.setOnClickListener {
-            onBrowseWorkoutsButtonClick()
-        }
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause Called")
+    }
 
-        button4.setOnClickListener {
-            onProgressButtonClick()
-        }
-        
-        infoButton.setOnClickListener {
-            onInfoButtonClick()
-        }
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop Called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy Called")
     }
 
     private fun onNewWorkoutButtonClick() {

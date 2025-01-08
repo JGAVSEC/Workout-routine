@@ -1,0 +1,167 @@
+package com.example.myworkoutapp.screens
+
+import android.widget.Button  // Add this import
+import android.view.LayoutInflater
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
+import com.example.myworkoutapp.R
+import com.example.myworkoutapp.navigation.Screen
+import android.widget.ImageView
+import android.widget.Toast
+import android.widget.ImageButton
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
+import androidx.compose.runtime.LaunchedEffect
+import com.example.myworkoutapp.BrowseWorkoutActivity
+import com.example.myworkoutapp.NewWorkoutActivity
+import com.example.myworkoutapp.SavedWorkoutActivity
+import com.example.myworkoutapp.ProgressWorkoutActivity
+import com.example.myworkoutapp.InfoActivity
+import android.content.Context
+import androidx.compose.runtime.Composable
+
+
+@Composable
+fun LoginScreen(navController: NavController) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                navController.navigate(Screen.Main.route) {
+                    popUpTo(Screen.Login.route) { inclusive = true }
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Login")
+        }
+    }
+}
+
+
+@Composable
+fun MainScreen(navController: NavController) {
+    AndroidView(
+        factory = { context ->
+            val view = LayoutInflater.from(context).inflate(R.layout.activity_main, null)
+            
+            // NEW WORKOUT button
+            view.findViewById<Button>(R.id.button1).setOnClickListener {
+                context.startActivity(Intent(context, NewWorkoutActivity::class.java))
+            }
+            
+            // SAVED WORKOUTS button
+            view.findViewById<Button>(R.id.button2).setOnClickListener {
+                context.startActivity(Intent(context, SavedWorkoutActivity::class.java))
+            }
+            
+            // BROWSE WORKOUTS button
+            view.findViewById<Button>(R.id.button3).setOnClickListener {
+                context.startActivity(Intent(context, BrowseWorkoutActivity::class.java))
+            }
+            
+            // PROGRESS button
+            view.findViewById<Button>(R.id.button4).setOnClickListener {
+                context.startActivity(Intent(context, ProgressWorkoutActivity::class.java))
+            }
+            
+            // INFO button
+            view.findViewById<Button>(R.id.infoButton).setOnClickListener {
+                context.startActivity(Intent(context, InfoActivity::class.java))
+            }
+            
+            // LOGOUT button
+            view.findViewById<Button>(R.id.logoutButton)?.setOnClickListener {
+                val sharedPref = context.getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLoggedIn", false)
+                    apply()
+                }
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Main.route) { inclusive = true }
+                }
+            }
+            
+            view
+        },
+        modifier = Modifier.fillMaxSize()
+    )
+}
+
+
+@Composable
+fun NewWorkoutScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, NewWorkoutActivity::class.java))
+        navController.navigateUp()
+    }
+}
+
+@Composable
+fun SavedWorkoutsScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, SavedWorkoutActivity::class.java))
+        navController.navigateUp()
+    }
+}
+
+@Composable
+fun ProgressScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, ProgressWorkoutActivity::class.java))
+        navController.navigateUp()
+    }
+}
+
+@Composable
+fun InfoScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, InfoActivity::class.java))
+        navController.navigateUp()
+    }
+}
+@Composable
+fun BrowseWorkoutsScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, BrowseWorkoutActivity::class.java))
+        navController.navigateUp()
+    }
+}
