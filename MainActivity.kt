@@ -15,11 +15,27 @@ import com.example.myworkoutapp.ui.theme.MyWorkoutAppTheme
 import android.widget.Button
 import android.widget.Toast
 import android.content.Intent
+import android.content.Context
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val sharedPref = getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
+
+        if (!isLoggedIn) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
+        val logoutButton: Button = findViewById(R.id.logoutButton)
+        
+        logoutButton.setOnClickListener {
+            logout()
+        }
 
         val button1: Button = findViewById(R.id.button1)
         val button2: Button = findViewById(R.id.button2)
@@ -70,6 +86,16 @@ class MainActivity : ComponentActivity() {
     private fun onInfoButtonClick() {
         val intent = Intent(this, InfoActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun logout() {
+        val sharedPref = getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("isLoggedIn", false)
+            apply()
+        }
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 }
 
