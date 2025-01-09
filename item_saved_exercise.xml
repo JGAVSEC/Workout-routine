@@ -14,17 +14,11 @@
         android:textColor="#FFFFFF"
         android:background="@null"/>
 
-    <ScrollView
+    <GridLayout
+        android:id="@+id/savedWorkoutsGrid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:id="@+id/exercisesContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"/>
-
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="16dp"/>
 
 </LinearLayout>

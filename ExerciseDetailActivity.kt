@@ -10,12 +10,24 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.example.myworkoutapp.api.RetrofitClient
+import com.example.myworkoutapp.data.dao.SavedExerciseDao
 import com.squareup.picasso.Picasso
 
+import com.example.myworkoutapp.data.database.AppDatabase
+import com.example.myworkoutapp.data.models.SavedExercise
+import kotlinx.coroutines.flow.Flow
+import com.example.myworkoutapp.data.repository.SavedExerciseRepository
 class ExerciseDetailActivity : ComponentActivity() {
+    private lateinit var repository: SavedExerciseRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercise_detail)
+
+        // Initialize repository
+        val database = AppDatabase.getDatabase(this)
+        repository = SavedExerciseRepository(database.savedExerciseDao())
+
 
         findViewById<Button>(R.id.backButton).setOnClickListener {
             finish()
@@ -73,6 +85,20 @@ class ExerciseDetailActivity : ComponentActivity() {
                     Picasso.get()
                         .load("https://wger.de${exercise.image}")
                         .into(imageView)
+                    
+                    // Add save button listener
+                    exerciseView.findViewById<Button>(R.id.saveButton).setOnClickListener {
+                        lifecycleScope.launch {
+                            val savedExercise = SavedExercise(
+                                name = exercise.name,
+                                category = exerciseType,
+                                imageUrl = "https://wger.de${exercise.image}"
+                            )
+                            repository.insert(savedExercise)
+                            Toast.makeText(this@ExerciseDetailActivity, 
+                                "Exercise saved!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     
                     exercisesContainer.addView(exerciseView)
                 }
