@@ -11,6 +11,12 @@
         android:theme="@style/Theme.MyWorkoutApp">
 
         <activity
+            android:name=".NewWorkoutActivity"
+            android:label="New Workout"
+            android:theme="@style/Theme.MyWorkoutApp"
+            android:exported="false" />
+
+        <activity
             android:name=".SavedWorkoutActivity"
             android:label="Saved Workout"
             android:theme="@style/Theme.MyWorkoutApp" />

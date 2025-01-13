@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MyWorkoutApp</string>
+    <string name="image1_desc">Description for Image 1</string>
+    <string name="image2_desc">Description for Image 2</string>
+    <string name="image3_desc">Description for Image 3</string>
+</resources>
