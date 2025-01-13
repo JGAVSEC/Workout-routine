@@ -42,7 +42,7 @@
             android:id="@+id/button2"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="SAVED WORKOUTS"
+            android:text="SAVED EXERCISES"
             android:textSize="18sp" />
 
         <Button
@@ -51,6 +51,14 @@
             android:layout_height="60dp"
             android:text="BROWSE WORKOUTS"
             android:textSize="18sp" />
+            
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="MY WORKOUTS"
+            android:textSize="18sp" />
+
 
         <Button
             android:id="@+id/button4"

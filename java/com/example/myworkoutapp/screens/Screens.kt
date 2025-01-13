@@ -19,9 +19,20 @@ import com.example.myworkoutapp.BrowseWorkoutActivity
 import com.example.myworkoutapp.NewWorkoutActivity
 import com.example.myworkoutapp.SavedWorkoutActivity
 import com.example.myworkoutapp.ProgressWorkoutActivity
+import com.example.myworkoutapp.MyWorkoutActivity
 import com.example.myworkoutapp.InfoActivity
 import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.sp
+import com.example.myworkoutapp.data.database.AppDatabase
+import com.example.myworkoutapp.data.models.Workout
+import com.example.myworkoutapp.data.repository.WorkoutRepository
+
 
 
 @Composable
@@ -89,6 +100,11 @@ fun MainScreen(navController: NavController) {
                 context.startActivity(Intent(context, BrowseWorkoutActivity::class.java))
             }
             
+            // PROGRESS button
+            view.findViewById<Button>(R.id.button5).setOnClickListener {
+                context.startActivity(Intent(context, MyWorkoutActivity::class.java))
+            }
+
             // PROGRESS button
             view.findViewById<Button>(R.id.button4).setOnClickListener {
                 context.startActivity(Intent(context, ProgressWorkoutActivity::class.java))
@@ -161,3 +177,40 @@ fun BrowseWorkoutsScreen(navController: NavController) {
         navController.navigateUp()
     }
 }
+
+@Composable
+private fun WorkoutCard(workout: Workout) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .aspectRatio(1f)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF34495E)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = workout.name,
+                color = Color.White,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
+
+
+@Composable
+fun MyWorkoutsScreen(navController: NavController) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        context.startActivity(Intent(context, MyWorkoutActivity::class.java))
+        navController.navigateUp()
+    }
+}
+

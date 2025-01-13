@@ -104,6 +104,11 @@ class MainActivity : ComponentActivity() {
         val intent = Intent(this, InfoActivity::class.java)
         startActivity(intent)
     }
+    
+    private fun onMyWorkoutButtonClick() {
+        val intent = Intent(this, MyWorkoutActivity::class.java)
+        startActivity(intent)
+    }
 
     private fun logout() {
         val sharedPref = getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
