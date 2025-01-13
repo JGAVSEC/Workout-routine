@@ -43,6 +43,15 @@ class SavedWorkoutActivity : ComponentActivity() {
                                 .load(exercise.imageUrl)
                                 .into(imageView)
                             
+                // Add remove button listener
+                view.findViewById<Button>(R.id.removeButton).setOnClickListener {
+                    lifecycleScope.launch {
+                        repository.delete(exercise)
+                        Toast.makeText(this@SavedWorkoutActivity, 
+                            "Exercise removed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                             container.addView(view)
                         }
                     }
