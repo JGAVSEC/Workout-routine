@@ -1,6 +1,7 @@
 package com.example.myworkoutapp
+
+import android.content.Intent
 import android.widget.Button
-import android.widget.ImageButton
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import android.widget.Toast
@@ -10,10 +11,16 @@ class NewWorkoutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_workout)
 
-        val backButton: Button = findViewById(R.id.backButton)
-
-        backButton.setOnClickListener {
+        findViewById<Button>(R.id.backButton).setOnClickListener {
             finish()
+        }
+
+        findViewById<Button>(R.id.searchButton).setOnClickListener {
+            startActivity(Intent(this, BrowseWorkoutActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.savedButton).setOnClickListener {
+            startActivity(Intent(this, SavedWorkoutActivity::class.java))
         }
     }
 }

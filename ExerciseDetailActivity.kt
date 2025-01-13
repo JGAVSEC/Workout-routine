@@ -77,7 +77,7 @@ class ExerciseDetailActivity : ComponentActivity() {
         
                 exercises.forEach { suggestion ->
                     val exercise = suggestion.data
-                    val exerciseView = layoutInflater.inflate(R.layout.item_exercise, exercisesContainer, false)
+                    val exerciseView = layoutInflater.inflate(R.layout.item_browse_exercise, exercisesContainer, false)
                     
                     exerciseView.findViewById<TextView>(R.id.exerciseName).text = exercise.name
                     
@@ -87,7 +87,7 @@ class ExerciseDetailActivity : ComponentActivity() {
                         .into(imageView)
                     
                     // Add save button listener
-                    exerciseView.findViewById<Button>(R.id.saveButton).setOnClickListener {
+                    exerciseView.findViewById<Button>(R.id.removeButton).setOnClickListener {
                         lifecycleScope.launch {
                             val savedExercise = SavedExercise(
                                 name = exercise.name,
