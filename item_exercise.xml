@@ -24,12 +24,12 @@
         android:scaleType="centerCrop"/>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/removeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:text="Save Exercise"
+        android:text="Remove Exercise"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_outline"
         android:padding="8dp"/>
