@@ -5,8 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.myworkoutapp.data.dao.SavedExerciseDao
+import com.example.myworkoutapp.data.dao.UserDao
 import com.example.myworkoutapp.data.dao.WorkoutDao
 import com.example.myworkoutapp.data.models.SavedExercise
+import com.example.myworkoutapp.data.models.User
 import com.example.myworkoutapp.data.models.Workout
 import com.example.myworkoutapp.data.models.WorkoutExercise
 
@@ -14,12 +16,14 @@ import com.example.myworkoutapp.data.models.WorkoutExercise
     entities = [
         SavedExercise::class,
         Workout::class,
-        WorkoutExercise::class
+        WorkoutExercise::class,
+        User::class
     ],
-    version = 2, // Increment version
-    exportSchema = false
+    version = 1,
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun userDao(): UserDao
     abstract fun savedExerciseDao(): SavedExerciseDao
     abstract fun workoutDao(): WorkoutDao
 
@@ -34,7 +38,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "workout_database"
                 )
-                .fallbackToDestructiveMigration() // This will clear the database on schema changes
+                .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
                 instance

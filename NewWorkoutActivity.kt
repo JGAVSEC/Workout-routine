@@ -1,3 +1,4 @@
+
 package com.example.myworkoutapp
 
 import android.app.AlertDialog
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.example.myworkoutapp.data.database.AppDatabase
 import com.example.myworkoutapp.data.repository.WorkoutRepository
+import com.example.myworkoutapp.data.repository.SavedExerciseRepository
 import com.example.myworkoutapp.data.models.Workout
 import com.example.myworkoutapp.data.models.WorkoutExercise
 import com.example.myworkoutapp.data.models.ExerciseSuggestion
@@ -23,8 +25,10 @@ import android.view.inputmethod.InputMethodManager
 
 class NewWorkoutActivity : ComponentActivity() {
     private lateinit var workoutRepository: WorkoutRepository
+    private lateinit var savedExerciseRepository: SavedExerciseRepository
     private var currentWorkoutId: Int? = null
     private var currentFilter: String? = null
+    private var showingSavedExercises = false
     private val TAG = "NewWorkoutActivity"
     private val selectedExercises = mutableListOf<ExerciseData>()
 
@@ -34,9 +38,19 @@ class NewWorkoutActivity : ComponentActivity() {
 
         val database = AppDatabase.getDatabase(this)
         workoutRepository = WorkoutRepository(database.workoutDao())
+        savedExerciseRepository = SavedExerciseRepository(database.savedExerciseDao())
 
         val workoutNameInput = findViewById<EditText>(R.id.workoutNameInput)
         val container = findViewById<LinearLayout>(R.id.exercisesContainer)
+
+        findViewById<Button>(R.id.toggleSourceButton).setOnClickListener {
+            showingSavedExercises = !showingSavedExercises
+            val buttonText = if (showingSavedExercises) "Show API Exercises" else "Show Saved Exercises"
+            (it as Button).text = buttonText
+            lifecycleScope.launch {
+                loadExercises()
+            }
+        }
 
         workoutNameInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -58,6 +72,38 @@ class NewWorkoutActivity : ComponentActivity() {
 
         findViewById<ImageButton>(R.id.filterButton).setOnClickListener {
             showFilterDialog()
+        }
+
+        findViewById<Button>(R.id.saveWorkoutButton).setOnClickListener {
+            val workoutName = workoutNameInput.text.toString()
+            if (workoutName.isNotEmpty()) {
+                lifecycleScope.launch {
+                    try {
+                        currentWorkoutId?.let { workoutId ->
+                            workoutRepository.updateWorkoutName(workoutId, workoutName)
+                            Toast.makeText(
+                                this@NewWorkoutActivity,
+                                "Workout saved!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error saving workout: ${e.message}")
+                        Toast.makeText(
+                            this@NewWorkoutActivity,
+                            "Error saving workout",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                Toast.makeText(
+                    this@NewWorkoutActivity,
+                    "Please enter a workout name",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -95,52 +141,107 @@ class NewWorkoutActivity : ComponentActivity() {
         try {
             val container = findViewById<LinearLayout>(R.id.exercisesContainer)
             container.removeAllViews()
-            val allExercises = mutableListOf<ExerciseSuggestion>()
-            
-            // Use filter or all categories
-            val categoriesToFetch = currentFilter?.let { listOf(it) } ?: exerciseCategories
 
-            categoriesToFetch.forEach { category ->
-                val response = RetrofitClient.api.searchExercises(
-                    term = category,
-                    language = 2
-                )
-                allExercises.addAll(response.suggestions)
-            }
+            if (showingSavedExercises) {
+                // Load saved exercises
+                savedExerciseRepository.getAllExercises().collect { savedExercises ->
+                    val filteredExercises = if (currentFilter != null) {
+                        savedExercises.filter { it.category.equals(currentFilter, ignoreCase = true) }
+                    } else {
+                        savedExercises
+                    }
 
-            // Filter unique exercises with images
-            val exercises = allExercises
-                .filter { it.data.image != null }
-                .distinctBy { it.data.id }
-                .shuffled()
-                .take(15)
-    
-            exercises.forEach { suggestion ->
-                val exercise = suggestion.data
-                val exerciseView = layoutInflater.inflate(
-                    R.layout.item_new_workout_exercise,
-                    container,
-                    false
-                )
-                exerciseView.findViewById<TextView>(R.id.exerciseName).text = exercise.name
-        
-                val imageView = exerciseView.findViewById<ImageView>(R.id.exerciseImage)
-                Picasso.get()
-                    .load("https://wger.de${exercise.image}")
-                    .into(imageView)
-        
-    
+                    filteredExercises.forEach { savedExercise ->
+                        val exerciseView = layoutInflater.inflate(
+                            R.layout.item_new_workout_exercise,
+                            container,
+                            false
+                        )
+                        
+                        exerciseView.findViewById<TextView>(R.id.exerciseName).text = savedExercise.name
+                        
+                        val imageView = exerciseView.findViewById<ImageView>(R.id.exerciseImage)
+                        Picasso.get()
+                            .load(savedExercise.imageUrl)
+                            .into(imageView)
+
+                        exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
+                            currentWorkoutId?.let { workoutId ->
+                                lifecycleScope.launch {
+                                    try {
+                                        val workoutExercise = WorkoutExercise(
+                                            workoutId = workoutId,
+                                            name = savedExercise.name,
+                                            category = savedExercise.category,
+                                            imageUrl = savedExercise.imageUrl,
+                                            order = selectedExercises.size
+                                        )
+                                        workoutRepository.addExerciseToWorkout(workoutId, workoutExercise)
+                                        addExerciseToWorkout(ExerciseData(
+                                            id = 0,
+                                            base_id = 0,
+                                            name = savedExercise.name,
+                                            category = savedExercise.category,
+                                            image = savedExercise.imageUrl,
+                                            image_thumbnail = savedExercise.imageUrl
+                                        ))
+                                        Toast.makeText(this@NewWorkoutActivity, 
+                                            "Exercise added to workout!", 
+                                            Toast.LENGTH_SHORT).show()
+                                    } catch (e: Exception) {
+                                        Log.e(TAG, "Error adding exercise: ${e.message}")
+                                    }
+                                }
+                            }
+                        }
+                        container.addView(exerciseView)
+                    }
+                }
+            } else {
+                // Load API exercises
+                val allExercises = mutableListOf<ExerciseSuggestion>()
+                val categoriesToFetch = currentFilter?.let { listOf(it) } ?: exerciseCategories
+
+                categoriesToFetch.forEach { category ->
+                    val response = RetrofitClient.api.searchExercises(
+                        term = category,
+                        language = 2
+                    )
+                    allExercises.addAll(response.suggestions)
+                }
+
+                val exercises = allExercises
+                    .filter { it.data.image != null }
+                    .distinctBy { it.data.id }
+                    .shuffled()
+                    .take(15)
+
+                exercises.forEach { suggestion ->
+                    val exercise = suggestion.data
+                    val exerciseView = layoutInflater.inflate(
+                        R.layout.item_new_workout_exercise,
+                        container,
+                        false
+                    )
+                    
+                    exerciseView.findViewById<TextView>(R.id.exerciseName).text = exercise.name
+                    
+                    val imageView = exerciseView.findViewById<ImageView>(R.id.exerciseImage)
+                    Picasso.get()
+                        .load("https://wger.de${exercise.image}")
+                        .into(imageView)
+
                     exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
                         currentWorkoutId?.let { workoutId ->
                             lifecycleScope.launch {
-                                val workoutExercise = WorkoutExercise(
-                                    workoutId = workoutId,
-                                    name = exercise.name,
-                                    category = exercise.category,
-                                    imageUrl = "https://wger.de${exercise.image}",
-                                    order = selectedExercises.size
-                                )
                                 try {
+                                    val workoutExercise = WorkoutExercise(
+                                        workoutId = workoutId,
+                                        name = exercise.name,
+                                        category = exercise.category,
+                                        imageUrl = "https://wger.de${exercise.image}",
+                                        order = selectedExercises.size
+                                    )
                                     workoutRepository.addExerciseToWorkout(workoutId, workoutExercise)
                                     addExerciseToWorkout(exercise)
                                     Toast.makeText(
@@ -150,17 +251,12 @@ class NewWorkoutActivity : ComponentActivity() {
                                     ).show()
                                 } catch (e: Exception) {
                                     Log.e(TAG, "Error adding exercise: ${e.message}")
-                                    Toast.makeText(
-                                        this@NewWorkoutActivity,
-                                        "Error adding exercise",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
                             }
                         }
                     }
-    
-                container.addView(exerciseView)
+                    container.addView(exerciseView)
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error loading exercises: ${e.message}")
@@ -177,13 +273,20 @@ class NewWorkoutActivity : ComponentActivity() {
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     
+        // Handle both API and saved exercise image URLs
+        val imageUrl = if (exercise.image?.startsWith("http") == true) {
+            exercise.image
+        } else {
+            "https://wger.de${exercise.image}"
+        }
+
         Picasso.get()
             .load("https://wger.de${exercise.image}")
             .into(thumbnailView)
     
-        selectedContainer.addView(thumbnailView)
-        selectedExercises.add(exercise)
-    
+            selectedContainer.addView(thumbnailView)
+            selectedExercises.add(exercise)
+
         thumbnailView.setOnClickListener {
             AlertDialog.Builder(this@NewWorkoutActivity)
                 .setTitle("Remove Exercise")

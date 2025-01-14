@@ -32,17 +32,19 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            val navController = rememberNavController()
-            
-            MyWorkoutAppTheme {
+        
+        val sharedPref = getSharedPreferences("MyWorkoutApp", Context.MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
+    
+        if (!isLoggedIn) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        } else {
+            setContent {
+                val navController = rememberNavController()
                 SetupNavGraph(
                     navController = navController,
-                    startDestination = if (viewModel.uiState.value.isLoggedIn) {
-                        Screen.Main.route
-                    } else {
-                        Screen.Login.route
-                    }
+                    startDestination = Screen.Main.route
                 )
             }
         }
@@ -102,6 +104,11 @@ class MainActivity : ComponentActivity() {
 
     private fun onInfoButtonClick() {
         val intent = Intent(this, InfoActivity::class.java)
+        startActivity(intent)
+    }
+    
+    private fun onMyWorkoutButtonClick() {
+        val intent = Intent(this, MyWorkoutActivity::class.java)
         startActivity(intent)
     }
 

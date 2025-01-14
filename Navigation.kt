@@ -33,9 +33,13 @@ fun SetupNavGraph(
         composable(Screen.Progress.route) {
             ProgressScreen(navController)
         }
+        composable(Screen.MyWorkouts.route) {
+            MyWorkoutsScreen(navController)
+        }
         composable(Screen.Info.route) {
             InfoScreen(navController)
         }
+
     }
 }
 
