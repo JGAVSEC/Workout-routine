@@ -42,6 +42,7 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/button_outline"
         android:padding="8dp"/>
+        
 </LinearLayout>
 
     <LinearLayout

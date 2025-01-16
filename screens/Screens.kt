@@ -70,10 +70,6 @@ fun MainScreen(navController: NavController) {
                 context.startActivity(Intent(context, MyWorkoutsActivity::class.java))
             }
 
-            // PROGRESS button
-            view.findViewById<Button>(R.id.button4).setOnClickListener {
-                context.startActivity(Intent(context, ProgressWorkoutActivity::class.java))
-            }
             
             // INFO button
             view.findViewById<Button>(R.id.infoButton).setOnClickListener {

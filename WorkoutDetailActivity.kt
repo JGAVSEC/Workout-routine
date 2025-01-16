@@ -1,8 +1,10 @@
 package com.example.myworkoutapp
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
@@ -13,6 +15,7 @@ import com.example.myworkoutapp.data.database.AppDatabase
 import com.example.myworkoutapp.data.repository.WorkoutRepository
 import com.example.myworkoutapp.data.models.WorkoutWithExercises
 import kotlinx.coroutines.flow.Flow
+import com.bumptech.glide.Glide
 
 class WorkoutDetailActivity : ComponentActivity() {
     private lateinit var workoutRepository: WorkoutRepository
@@ -42,20 +45,32 @@ class WorkoutDetailActivity : ComponentActivity() {
             }
         }
     }
-    private fun displayWorkout(workoutWithExercises: WorkoutWithExercises) {
-        val titleText = findViewById<TextView>(R.id.workoutTitleText)
-        titleText.text = workoutWithExercises.workout.name
 
+    private fun displayWorkout(workoutWithExercises: WorkoutWithExercises) {
         val container = findViewById<LinearLayout>(R.id.exercisesContainer)
         container.removeAllViews()
         
         workoutWithExercises.exercises.forEach { exercise ->
             val exerciseView = layoutInflater.inflate(
-                R.layout.item_my_workout,
+                R.layout.item_show_my_workout,
                 container,
                 false
             )
+            
             exerciseView.findViewById<TextView>(R.id.exerciseName).text = exercise.name
+            val imageView = exerciseView.findViewById<ImageView>(R.id.exerciseImage)
+            
+            // Only show image if URL exists
+            if (!exercise.imageUrl.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load(exercise.imageUrl)
+                    .centerCrop()
+                    .into(imageView)
+            } else {
+                // Log missing image URLs for debugging
+                Log.d("WorkoutDetail", "Missing image URL for exercise: ${exercise.name}")
+            }
+                    
             container.addView(exerciseView)
         }
     }

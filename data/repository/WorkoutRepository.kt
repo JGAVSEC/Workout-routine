@@ -16,26 +16,24 @@ class WorkoutRepository(private val workoutDao: WorkoutDao) {
         workoutDao.insertWorkoutExercise(exercise)
     }
 
-    fun getAllWorkouts(): Flow<List<Workout>> = 
-        workoutDao.getAllWorkouts()
-
-    fun getWorkoutExercises(workoutId: Int): Flow<List<WorkoutExercise>> = 
-        workoutDao.getWorkoutExercises(workoutId)
-
-    suspend fun deleteWorkout(workout: Workout) {
-        workoutDao.deleteWorkout(workout)
+    // Remove duplicate methods
+    fun getAllWorkoutsWithExercises(): Flow<List<WorkoutWithExercises>> {
+        return workoutDao.getAllWorkoutsWithExercises()
     }
-    
+
     fun getWorkoutWithExercises(workoutId: Int): Flow<WorkoutWithExercises> {
         return workoutDao.getWorkoutWithExercises(workoutId)
     }
 
-    suspend fun removeExerciseFromWorkout(exercise: WorkoutExercise) {
-        workoutDao.deleteWorkoutExercise(exercise)
+    suspend fun deleteWorkout(workout: Workout) {
+        workoutDao.deleteWorkout(workout)
     }
 
     suspend fun updateWorkoutName(workoutId: Int, newName: String) {
         workoutDao.updateWorkoutName(workoutId, newName)
     }
 
+    suspend fun removeExerciseFromWorkout(exercise: WorkoutExercise) {
+        workoutDao.deleteWorkoutExercise(exercise)
+    }
 }

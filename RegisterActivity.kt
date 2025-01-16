@@ -23,10 +23,15 @@ class RegisterActivity : ComponentActivity() {
             val database = AppDatabase.getDatabase(this)
             userRepository = UserRepository(database.userDao())
 
+            val backToLoginButton = findViewById<Button>(R.id.backToLoginButton)
             val nameInput = findViewById<EditText>(R.id.nameInput)
             val emailInput = findViewById<EditText>(R.id.emailInput)
             val passwordInput = findViewById<EditText>(R.id.passwordInput)
             val registerButton = findViewById<Button>(R.id.registerButton)
+            
+            backToLoginButton.setOnClickListener {
+                finish() // This will return to LoginActivity
+            }
 
             registerButton.setOnClickListener {
                 val name = nameInput.text.toString()
@@ -37,6 +42,7 @@ class RegisterActivity : ComponentActivity() {
                     Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
+
 
                 lifecycleScope.launch {
                     try {
