@@ -22,7 +22,7 @@ class SavedWorkoutActivity : ComponentActivity() {
             val database = AppDatabase.getDatabase(this)
             repository = SavedExerciseRepository(database.savedExerciseDao())
 
-            findViewById<Button>(R.id.backButton).setOnClickListener {
+            findViewById<ImageButton>(R.id.backButton).setOnClickListener {
                 finish()
             }
 

@@ -1,93 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2C3E50">
+    android:background="#1c2833"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- Spacing at the top -->
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_height="112dp" />
 
-        <TextView
-            android:id="@+id/appName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SAMZYZZ"
-            android:textSize="60sp"
-            android:textColor="#FFFFFF"
-            android:padding="18dp"
-            android:fontFamily="@font/america_captian" />
-    </LinearLayout>
+    <!-- App Name -->
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center">
+    <!-- Buttons Container -->
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="NEW WORKOUT"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="SAVED EXERCISES"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="BROWSE WORKOUTS"
-            android:textSize="18sp" />
-            
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="MY WORKOUTS"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="@font/america_captian"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="4"
+        android:text="SAMZYZZ"
+        android:textColor="#FFFFFF"
+        android:textSize="75sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="481dp"
+        android:gravity="center"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <Button
-            android:id="@+id/infoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="INFO"
-            android:textSize="18sp"
+            android:id="@+id/button1"
+            android:layout_width="290dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:text="NEW WORKOUT"
+            android:textAllCaps="true"
             android:textColor="#FFFFFF"
-            android:background="#FF5722"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp" />
+            android:textSize="18sp"
+            android:background="@drawable/button_outline"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="290dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:text="SAVED EXERCISES"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:background="@drawable/button_outline"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="290dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:text="BROWSE WORKOUTS"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:background="@drawable/button_outline"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="290dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            android:text="MY WORKOUTS"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:background="@drawable/button_outline"/>
+
+            
+    </LinearLayout>
+
+    <!-- Spacing -->
+
+    <!-- Logout and Info Buttons -->
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="163dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Button
             android:id="@+id/logoutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="20dp"
+            android:text="LOGOUT"
             android:textColor="#FFFFFF"
-            android:background="#FF5722"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"/>
-            
-    </FrameLayout>
+            android:textSize="16sp"
+            android:background="@drawable/button_outline"/>
+
+        <Button
+            android:id="@+id/infoButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:text="INFO"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" 
+            android:background="@drawable/button_outline"/>
+
+
+    </LinearLayout>
 </LinearLayout>

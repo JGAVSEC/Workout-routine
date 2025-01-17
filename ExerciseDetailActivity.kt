@@ -2,6 +2,7 @@ package com.example.myworkoutapp
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -29,7 +30,7 @@ class ExerciseDetailActivity : ComponentActivity() {
         repository = SavedExerciseRepository(database.savedExerciseDao())
 
 
-        findViewById<Button>(R.id.backButton).setOnClickListener {
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 

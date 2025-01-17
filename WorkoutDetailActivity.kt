@@ -25,7 +25,7 @@ class WorkoutDetailActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout_create) 
 
-        findViewById<Button>(R.id.backButton).setOnClickListener {
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()  // or onBackPressed() for older Android versions
         }
 

@@ -1,5 +1,6 @@
 package com.example.myworkoutapp
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +20,10 @@ import com.example.myworkoutapp.data.models.Workout
 import com.example.myworkoutapp.data.models.WorkoutWithExercises
 import com.example.myworkoutapp.data.repository.WorkoutRepository
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.LinearLayoutManager
+
 
 class MyWorkoutsActivity : ComponentActivity() {
     private lateinit var workoutRepository: WorkoutRepository
@@ -27,7 +32,7 @@ class MyWorkoutsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_workouts)
 
-        val backToLoginButton = findViewById<Button>(R.id.backButton)
+        val backToLoginButton = findViewById<ImageButton>(R.id.backButton)
         val database = AppDatabase.getDatabase(this)
         workoutRepository = WorkoutRepository(database.workoutDao())
         
@@ -52,14 +57,24 @@ class MyWorkoutsActivity : ComponentActivity() {
         }
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
 
         lifecycleScope.launch {
-            workoutRepository.getAllWorkoutsWithExercises().collect { workouts ->
-                Log.d("MyWorkouts", "Received workouts: ${workouts.size}")
-                adapter.updateWorkouts(workouts)
-            }
+            Log.d(TAG, "Starting to collect workouts")
+            workoutRepository.getAllWorkoutsWithExercises()
+                .collect { workouts ->
+                    Log.d(TAG, "Received ${workouts.size} workouts")
+                    adapter.updateWorkouts(workouts)
+                }
         }
+        // lifecycleScope.launch {
+        //     workoutRepository.getAllWorkoutsWithExercises().collect { workouts ->
+        //         Log.d("MyWorkouts", "Received workouts: ${workouts.size}")
+        //         adapter.updateWorkouts(workouts)
+        //     }
+        // }
     }
 }
 
@@ -70,7 +85,7 @@ class WorkoutAdapter : RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder>() 
 
     class WorkoutViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val workoutName: Button = itemView.findViewById(R.id.workoutName)
-        val deleteWorkout: Button = itemView.findViewById(R.id.deleteWorkout)
+        val deleteWorkout: ImageButton = itemView.findViewById(R.id.deleteWorkout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutViewHolder {

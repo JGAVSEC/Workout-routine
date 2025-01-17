@@ -31,6 +31,14 @@ class NewWorkoutActivity : ComponentActivity() {
     private val TAG = "NewWorkoutActivity"
     private val selectedExercises = mutableListOf<ExerciseData>()
 
+    private suspend fun createWorkout(name: String): Int {
+        Log.d(TAG, "Creating new workout with name: $name")
+        val workoutId = workoutRepository.createWorkout(name)
+        Log.d(TAG, "Created workout with ID: $workoutId")
+        return workoutId
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_workout)
@@ -57,7 +65,10 @@ class NewWorkoutActivity : ComponentActivity() {
                 if (workoutName.isNotEmpty()) {
                     hideKeyboard()
                     lifecycleScope.launch {
-                        currentWorkoutId = workoutRepository.createWorkout(workoutName)
+                        // Only create if no currentWorkoutId
+                        if (currentWorkoutId == null) {
+                            currentWorkoutId = workoutRepository.createWorkout(workoutName)
+                        }
                         loadExercises()
                     }
                 }
@@ -65,7 +76,21 @@ class NewWorkoutActivity : ComponentActivity() {
             } else false
         }
 
-        findViewById<Button>(R.id.backButton).setOnClickListener {
+        // workoutNameInput.setOnEditorActionListener { _, actionId, _ ->
+        //     if (actionId == EditorInfo.IME_ACTION_DONE) {
+        //         val workoutName = workoutNameInput.text.toString()
+        //         if (workoutName.isNotEmpty()) {
+        //             hideKeyboard()
+        //             lifecycleScope.launch {
+        //                 currentWorkoutId = workoutRepository.createWorkout(workoutName)
+        //                 loadExercises()
+        //             }
+        //         }
+        //         true
+        //     } else false
+        // }
+
+        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
             finish()
         }
 
@@ -104,6 +129,38 @@ class NewWorkoutActivity : ComponentActivity() {
                 ).show()
             }
         }
+
+        // findViewById<Button>(R.id.saveWorkoutButton).setOnClickListener {
+        //     val workoutName = workoutNameInput.text.toString()
+        //     if (workoutName.isNotEmpty()) {
+        //         lifecycleScope.launch {
+        //             try {
+        //                 currentWorkoutId?.let { workoutId ->
+        //                     workoutRepository.updateWorkoutName(workoutId, workoutName)
+        //                     Toast.makeText(
+        //                         this@NewWorkoutActivity,
+        //                         "Workout saved!",
+        //                         Toast.LENGTH_SHORT
+        //                     ).show()
+        //                     finish()
+        //                 }
+        //             } catch (e: Exception) {
+        //                 Log.e(TAG, "Error saving workout: ${e.message}")
+        //                 Toast.makeText(
+        //                     this@NewWorkoutActivity,
+        //                     "Error saving workout",
+        //                     Toast.LENGTH_SHORT
+        //                 ).show()
+        //             }
+        //         }
+        //     } else {
+        //         Toast.makeText(
+        //             this@NewWorkoutActivity,
+        //             "Please enter a workout name",
+        //             Toast.LENGTH_SHORT
+        //         ).show()
+        //     }
+        // }
     }
 
     private fun hideKeyboard() {
@@ -164,44 +221,6 @@ class NewWorkoutActivity : ComponentActivity() {
                             .load(savedExercise.imageUrl)
                             .into(imageView)
 
-                            // exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
-                            //     currentWorkoutId?.let { workoutId ->
-                            //         lifecycleScope.launch {
-                            //             try {
-                            //                 // Check if exercise already exists before adding
-                            //                 if (selectedExercises.any { it.name == exercise.name }) {
-                            //                     Toast.makeText(
-                            //                         this@NewWorkoutActivity,
-                            //                         "Exercise already added to workout",
-                            //                         Toast.LENGTH_SHORT
-                            //                     ).show()
-                            //                     return@launch
-                            //                 }
-                            
-                            //                 val workoutExercise = WorkoutExercise(
-                            //                     workoutId = workoutId,
-                            //                     name = exercise.name,
-                            //                     category = exercise.category,
-                            //                     imageUrl = "https://wger.de${exercise.image}",
-                            //                     order = selectedExercises.size
-                            //                 )
-                                            
-                            //                 // Add to database first
-                            //                 workoutRepository.addExerciseToWorkout(workoutId, workoutExercise)
-                            //                 // Then update UI
-                            //                 addExerciseToWorkout(exercise)
-                                            
-                            //                 Toast.makeText(
-                            //                     this@NewWorkoutActivity,
-                            //                     "Exercise added to workout!",
-                            //                     Toast.LENGTH_SHORT
-                            //                 ).show()
-                            //             } catch (e: Exception) {
-                            //                 Log.e(TAG, "Error adding exercise: ${e.message}")
-                            //             }
-                            //         }
-                            //     }
-                            // }
                         exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
                             currentWorkoutId?.let { workoutId ->
                                 lifecycleScope.launch {
@@ -268,31 +287,6 @@ class NewWorkoutActivity : ComponentActivity() {
                         .load("https://wger.de${exercise.image}")
                         .into(imageView)
 
-                    // exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
-                    //     currentWorkoutId?.let { workoutId ->
-                    //         lifecycleScope.launch {
-                    //             try {
-                    //                 val workoutExercise = WorkoutExercise(
-                    //                     workoutId = workoutId,
-                    //                     name = exercise.name,
-                    //                     category = exercise.category,
-                    //                     imageUrl = "https://wger.de${exercise.image}",
-                    //                     order = selectedExercises.size
-                    //                 )
-                    //                 workoutRepository.addExerciseToWorkout(workoutId, workoutExercise)
-                    //                 addExerciseToWorkout(exercise)
-                    //                 Toast.makeText(
-                    //                     this@NewWorkoutActivity,
-                    //                     "Exercise added to workout!",
-                    //                     Toast.LENGTH_SHORT
-                    //                 ).show()
-                    //             } catch (e: Exception) {
-                    //                 Log.e(TAG, "Error adding exercise: ${e.message}")
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
                     exerciseView.findViewById<Button>(R.id.addToWorkoutButton).setOnClickListener {
                         currentWorkoutId?.let { workoutId ->
                             lifecycleScope.launch {
@@ -340,17 +334,64 @@ class NewWorkoutActivity : ComponentActivity() {
     }
 
     private fun addExerciseToWorkout(exercise: ExerciseData) {
+        // val selectedContainer = findViewById<LinearLayout>(R.id.selectedExercisesContainer)
+        
+        // // if (selectedExercises.any { it.name == exercise.name }) {
+        // //     Toast.makeText(
+        // //         this,
+        // //         "Exercise already added to workout",
+        // //         Toast.LENGTH_SHORT
+        // //     ).show()
+        // //     return
+        // // }
+
+        // if (selectedExercises.any { it.id == exercise.id }) {
+        //     Log.d(TAG, "Exercise already exists in workout")
+        //     Toast.makeText(
+        //         this,
+        //         "Exercise already added to workout",
+        //         Toast.LENGTH_SHORT
+        //     ).show()
+        //     return
+        // }
+
+        // val thumbnailView = ImageView(this).apply {
+        //     layoutParams = LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.MATCH_PARENT).apply {
+        //         marginEnd = 8
+        //     }
+        //     scaleType = ImageView.ScaleType.CENTER_CROP
+        // }
+    
+
+        // // Handle both API and saved exercise image URLs
+        // val imageUrl = if (exercise.image?.startsWith("http") == true) {
+        //     exercise.image
+        // } else {
+        //     "https://wger.de${exercise.image}"
+        // }
+
+        // Picasso.get()
+        //     .load("https://wger.de${exercise.image}")
+        //     .into(thumbnailView)
+
+        
+        // // Picasso.get()
+        // // .load(imageUrl)  // Use the processed imageUrl
+        // // .into(thumbnailView)
+    
+        //     selectedContainer.addView(thumbnailView)
+        //     selectedExercises.add(exercise)
+
+
+        Log.d(TAG, "Attempting to add exercise: ${exercise.name} with ID: ${exercise.id}")
         val selectedContainer = findViewById<LinearLayout>(R.id.selectedExercisesContainer)
         
-        if (selectedExercises.any { it.name == exercise.name }) {
-            Toast.makeText(
-                this,
-                "Exercise already added to workout",
-                Toast.LENGTH_SHORT
-            ).show()
+        if (selectedExercises.any { it.id == exercise.id }) {
+            Log.d(TAG, "Exercise already exists in workout")
+            Toast.makeText(this, "Exercise already added to workout", Toast.LENGTH_SHORT).show()
             return
         }
-
+    
         val thumbnailView = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.MATCH_PARENT).apply {
                 marginEnd = 8
@@ -358,24 +399,22 @@ class NewWorkoutActivity : ComponentActivity() {
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     
-        // Handle both API and saved exercise image URLs
         val imageUrl = if (exercise.image?.startsWith("http") == true) {
             exercise.image
         } else {
             "https://wger.de${exercise.image}"
         }
-
-        // Picasso.get()
-        //     .load("https://wger.de${exercise.image}")
-        //     .into(thumbnailView)
-
+    
+        Log.d(TAG, "Loading image from URL: $imageUrl")
         
         Picasso.get()
-        .load(imageUrl)  // Use the processed imageUrl
-        .into(thumbnailView)
+            .load(imageUrl) // Use processed imageUrl instead of concatenating again
+            .into(thumbnailView)
     
-            selectedContainer.addView(thumbnailView)
-            selectedExercises.add(exercise)
+        selectedContainer.addView(thumbnailView)
+        selectedExercises.add(exercise)
+        Log.d(TAG, "Exercise added. Total exercises: ${selectedExercises.size}")
+
 
         thumbnailView.setOnClickListener {
             AlertDialog.Builder(this@NewWorkoutActivity)

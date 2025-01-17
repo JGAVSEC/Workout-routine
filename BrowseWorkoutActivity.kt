@@ -18,7 +18,7 @@ class BrowseWorkoutActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_browse_workout)
 
-        val backButton: Button = findViewById(R.id.backButton)
+        val backButton: ImageButton = findViewById(R.id.backButton)
 
         backButton.setOnClickListener {
             finish() 

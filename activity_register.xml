@@ -3,59 +3,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="#2C3E50">
+    android:background="#1c2833">
 
-    <EditText
-        android:id="@+id/nameInput"
+    <!-- Top Section -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:textColorHint="#80FFFFFF"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        android:background="#34495E"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:gravity="center">
 
-    <EditText
-        android:id="@+id/emailInput"
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/america_captian"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:text="SAMZYZZ"
+            android:textColor="#FFFFFF"
+            android:textSize="55sp" />
+    </LinearLayout>
+
+    <!-- Middle Section -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:textColorHint="#80FFFFFF"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        android:background="#34495E"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <EditText
-        android:id="@+id/passwordInput"
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/edittext_bottom_line"
+            android:hint="Name"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/edittext_bottom_line"
+            android:hint="Email"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/edittext_bottom_line"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_outline"
+            android:text="Register"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/backToLoginButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_outline"
+            android:text="Back to Login"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Bottom Section -->
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColorHint="#80FFFFFF"
-        android:textColor="#FFFFFF"
-        android:padding="16dp"
-        android:layout_margin="8dp"
-        android:background="#34495E"/>
-
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_outline"
-        android:layout_margin="16dp"/>
-
-    <Button
-        android:id="@+id/backToLoginButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Back to Login"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_outline"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.15" />
 
 </LinearLayout>
