@@ -1,5 +1,6 @@
 package com.example.myworkoutapp
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.DataSource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import com.example.myworkoutapp.data.database.AppDatabase
@@ -16,6 +18,8 @@ import com.example.myworkoutapp.data.repository.WorkoutRepository
 import com.example.myworkoutapp.data.models.WorkoutWithExercises
 import kotlinx.coroutines.flow.Flow
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 
 class WorkoutDetailActivity : ComponentActivity() {
     private lateinit var workoutRepository: WorkoutRepository
@@ -39,6 +43,14 @@ class WorkoutDetailActivity : ComponentActivity() {
         workoutRepository = WorkoutRepository(database.workoutDao())
 
         lifecycleScope.launch {
+            workoutRepository.getWorkoutWithExercises(workoutId).collect { workoutWithExercises ->
+                workoutWithExercises?.let {
+                    findViewById<TextView>(R.id.workoutTitleText).text = it.workout.name
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             val workoutFlow: Flow<WorkoutWithExercises> = workoutRepository.getWorkoutWithExercises(workoutId)
             workoutFlow.collectLatest { workoutWithExercises ->
                 displayWorkout(workoutWithExercises)
@@ -60,18 +72,14 @@ class WorkoutDetailActivity : ComponentActivity() {
             exerciseView.findViewById<TextView>(R.id.exerciseName).text = exercise.name
             val imageView = exerciseView.findViewById<ImageView>(R.id.exerciseImage)
             
-            // Only show image if URL exists
-            if (!exercise.imageUrl.isNullOrEmpty()) {
-                Glide.with(this)
-                    .load(exercise.imageUrl)
-                    .centerCrop()
-                    .into(imageView)
-            } else {
-                // Log missing image URLs for debugging
-                Log.d("WorkoutDetail", "Missing image URL for exercise: ${exercise.name}")
-            }
+            Glide.with(this)
+                .load(exercise.imageUrl)
+                .placeholder(R.drawable.exercise_placeholder)
+                .error(R.drawable.exercise_placeholder)
+                .into(imageView)
                     
             container.addView(exerciseView)
         }
     }
+
 }

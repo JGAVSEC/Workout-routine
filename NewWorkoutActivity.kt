@@ -169,7 +169,7 @@ class NewWorkoutActivity : ComponentActivity() {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
-
+    //Mogoce UPPER CASE
     private val exerciseCategories = listOf(
         "shoulder", "biceps", "triceps", "forearm", "chest", "back", "leg"
     )
@@ -334,64 +334,17 @@ class NewWorkoutActivity : ComponentActivity() {
     }
 
     private fun addExerciseToWorkout(exercise: ExerciseData) {
-        // val selectedContainer = findViewById<LinearLayout>(R.id.selectedExercisesContainer)
-        
-        // // if (selectedExercises.any { it.name == exercise.name }) {
-        // //     Toast.makeText(
-        // //         this,
-        // //         "Exercise already added to workout",
-        // //         Toast.LENGTH_SHORT
-        // //     ).show()
-        // //     return
-        // // }
-
-        // if (selectedExercises.any { it.id == exercise.id }) {
-        //     Log.d(TAG, "Exercise already exists in workout")
-        //     Toast.makeText(
-        //         this,
-        //         "Exercise already added to workout",
-        //         Toast.LENGTH_SHORT
-        //     ).show()
-        //     return
-        // }
-
-        // val thumbnailView = ImageView(this).apply {
-        //     layoutParams = LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.MATCH_PARENT).apply {
-        //         marginEnd = 8
-        //     }
-        //     scaleType = ImageView.ScaleType.CENTER_CROP
-        // }
-    
-
-        // // Handle both API and saved exercise image URLs
-        // val imageUrl = if (exercise.image?.startsWith("http") == true) {
-        //     exercise.image
-        // } else {
-        //     "https://wger.de${exercise.image}"
-        // }
-
-        // Picasso.get()
-        //     .load("https://wger.de${exercise.image}")
-        //     .into(thumbnailView)
-
-        
-        // // Picasso.get()
-        // // .load(imageUrl)  // Use the processed imageUrl
-        // // .into(thumbnailView)
-    
-        //     selectedContainer.addView(thumbnailView)
-        //     selectedExercises.add(exercise)
-
-
-        Log.d(TAG, "Attempting to add exercise: ${exercise.name} with ID: ${exercise.id}")
         val selectedContainer = findViewById<LinearLayout>(R.id.selectedExercisesContainer)
         
-        if (selectedExercises.any { it.id == exercise.id }) {
-            Log.d(TAG, "Exercise already exists in workout")
-            Toast.makeText(this, "Exercise already added to workout", Toast.LENGTH_SHORT).show()
+        if (selectedExercises.any { it.name == exercise.name }) {
+            Toast.makeText(
+                this,
+                "Exercise already added to workout",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
-    
+
         val thumbnailView = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.MATCH_PARENT).apply {
                 marginEnd = 8
@@ -399,22 +352,24 @@ class NewWorkoutActivity : ComponentActivity() {
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
     
+        // Handle both API and saved exercise image URLs
         val imageUrl = if (exercise.image?.startsWith("http") == true) {
             exercise.image
         } else {
             "https://wger.de${exercise.image}"
         }
-    
-        Log.d(TAG, "Loading image from URL: $imageUrl")
+
+        // Picasso.get()
+        //     .load("https://wger.de${exercise.image}")
+        //     .into(thumbnailView)
+
         
         Picasso.get()
-            .load(imageUrl) // Use processed imageUrl instead of concatenating again
-            .into(thumbnailView)
+        .load(imageUrl)  // Use the processed imageUrl
+        .into(thumbnailView)
     
-        selectedContainer.addView(thumbnailView)
-        selectedExercises.add(exercise)
-        Log.d(TAG, "Exercise added. Total exercises: ${selectedExercises.size}")
-
+            selectedContainer.addView(thumbnailView)
+            selectedExercises.add(exercise)
 
         thumbnailView.setOnClickListener {
             AlertDialog.Builder(this@NewWorkoutActivity)

@@ -64,17 +64,14 @@ class MyWorkoutsActivity : ComponentActivity() {
         lifecycleScope.launch {
             Log.d(TAG, "Starting to collect workouts")
             workoutRepository.getAllWorkoutsWithExercises()
+                .map { workouts -> 
+                    workouts.filter { it.exercises.isNotEmpty() }
+                }
                 .collect { workouts ->
                     Log.d(TAG, "Received ${workouts.size} workouts")
                     adapter.updateWorkouts(workouts)
                 }
         }
-        // lifecycleScope.launch {
-        //     workoutRepository.getAllWorkoutsWithExercises().collect { workouts ->
-        //         Log.d("MyWorkouts", "Received workouts: ${workouts.size}")
-        //         adapter.updateWorkouts(workouts)
-        //     }
-        // }
     }
 }
 
