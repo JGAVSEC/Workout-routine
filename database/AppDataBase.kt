@@ -5,15 +5,27 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.myworkoutapp.data.dao.SavedExerciseDao
+import com.example.myworkoutapp.data.dao.UserDao
+import com.example.myworkoutapp.data.dao.WorkoutDao
 import com.example.myworkoutapp.data.models.SavedExercise
+import com.example.myworkoutapp.data.models.User
+import com.example.myworkoutapp.data.models.Workout
+import com.example.myworkoutapp.data.models.WorkoutExercise
 
 @Database(
-    entities = [SavedExercise::class],
+    entities = [
+        SavedExercise::class,
+        Workout::class,
+        WorkoutExercise::class,
+        User::class
+    ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
+    abstract fun userDao(): UserDao
     abstract fun savedExerciseDao(): SavedExerciseDao
+    abstract fun workoutDao(): WorkoutDao
 
     companion object {
         @Volatile

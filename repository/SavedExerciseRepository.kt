@@ -17,4 +17,8 @@ class SavedExerciseRepository(private val savedExerciseDao: SavedExerciseDao) {
         Log.d(TAG, "Inserting exercise: ${exercise.name}")
         savedExerciseDao.insertExercise(exercise)
     }
+
+    suspend fun delete(exercise: SavedExercise) {
+        savedExerciseDao.deleteExercise(exercise)
+    }
 }
